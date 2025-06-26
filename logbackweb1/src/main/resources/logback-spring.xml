@@ -1,0 +1,81 @@
+<configuration>
+
+  <!-- Caminho dos arquivos de log -->
+  <property name="LOG_PATH" value="logs"/>
+
+  <!-- Appender: Console (JSON estruturado) -->
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+      <providers>
+        <timestamp>
+          <fieldName>timestamp</fieldName>
+        </timestamp>
+        <logLevel>
+          <fieldName>level</fieldName>
+        </logLevel>
+        <loggerName>
+          <fieldName>logger</fieldName>
+        </loggerName>
+        <threadName>
+          <fieldName>thread</fieldName>
+        </threadName>
+        <message/>
+        <stackTrace/>
+      </providers>
+    </encoder>
+  </appender>
+
+  <!-- Appender: Arquivo de erros -->
+  <appender name="ERROR-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_PATH}/error.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_PATH}/error.%d{yyyy-MM-dd}.log</fileNamePattern>
+      <maxHistory>7</maxHistory>
+    </rollingPolicy>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>ERROR</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+      <providers>
+        <timestamp/>
+        <logLevel/>
+        <loggerName/>
+        <threadName/>
+        <message/>
+        <stackTrace/>
+      </providers>
+    </encoder>
+  </appender>
+
+  <!-- Appender: Auditoria -->
+  <appender name="AUDIT-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_PATH}/audit.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_PATH}/audit.%d{yyyy-MM-dd}.log</fileNamePattern>
+      <maxHistory>7</maxHistory>
+    </rollingPolicy>
+    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+      <providers>
+        <timestamp/>
+        <logLevel/>
+        <loggerName/>
+        <threadName/>
+        <message/>
+      </providers>
+    </encoder>
+  </appender>
+
+  <!-- Logger dedicado para auditoria -->
+  <logger name="com.senac.logbackweb1.audit" level="INFO" additivity="false">
+    <appender-ref ref="AUDIT-FILE"/>
+  </logger>
+
+  <!-- Logger raiz -->
+  <root level="INFO">
+    <appender-ref ref="CONSOLE"/>
+    <appender-ref ref="ERROR-FILE"/>
+  </root>
+
+</configuration>
