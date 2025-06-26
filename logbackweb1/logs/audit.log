@@ -1,0 +1,1 @@
+{"@timestamp":"2025-06-26T19:23:22.1522642-03:00","level":"INFO","logger_name":"com.senac.logbackweb1.audit","thread_name":"http-nio-8080-exec-2","message":"AUDIT: Ação crítica registrada com sucesso."}
